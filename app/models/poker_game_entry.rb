@@ -3,5 +3,5 @@ class PokerGameEntry < ApplicationRecord
 
   validates :name, presence: true
 
-  acts_as_list scope: [:poker_game]
+  acts_as_list scope: [ :poker_game ]
 end
