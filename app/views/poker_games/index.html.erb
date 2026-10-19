@@ -1,0 +1,62 @@
+<% if authenticated? %>
+  <%= link_to 'Create New Game', new_poker_game_path, class: 'btn btn-primary mb-3' %>
+<% end %>
+<div class="row">
+  <% @poker_games.each do |poker_game| %>
+    <div class="col-sm-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= poker_game.title %></h5>
+          <small class="card-text">
+            <%= poker_game.location %> at
+            <%= poker_game.datetime.to_formatted_s(:custom_12h) %>
+          </small>
+          <div class="accordion" id="accordion<%= poker_game.id %>">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdd<%= poker_game.id %>" aria-expanded="true" aria-controls="collapseAdd<%= poker_game.id %>">
+                  Sign Up
+                </button>
+              </h2>
+              <div id="collapseAdd<%= poker_game.id %>" class="accordion-collapse collapse" data-bs-parent="#accordion<%= poker_game.id %>">
+                <div class="accordion-body">
+                  <div>
+                    <%= bootstrap_form_with model: PokerGameEntry.new do |poker_entry_form| %>
+                      <%= poker_entry_form.hidden_field :poker_game_id, value: poker_game.id %>
+                      <div class="mb-3">
+                        <%= poker_entry_form.text_field :name, placeholder: 'Your Name for the List' %>
+                      </div>
+                      <div class="mb-3">
+                        <%= poker_entry_form.submit %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% if poker_game.poker_game_entries.present? %>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseList<%= poker_game.id %>" aria-expanded="true" aria-controls="collapseList<%= poker_game.id %>">
+                    Show the List
+                  </button>
+                </h2>
+                <div id="collapseList<%= poker_game.id %>" class="accordion-collapse collapse" data-bs-parent="#accordion<%= poker_game.id %>">
+                  <div class="accordion-body">
+                    <ol>
+                      <% poker_game.poker_game_entries.each do |poker_game_entry| %>
+                        <li><%= poker_game_entry.name %></li>
+                      <% end %>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            <% else %>
+              Nobody on the list yet. Be the first to sign up!
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
