@@ -7,6 +7,12 @@ class PokerGameEntriesController < ApplicationController
     redirect_to poker_games_path
   end
 
+  def destroy
+    PokerGameEntry.find(params[:id]).destroy
+
+    redirect_to poker_games_path
+  end
+
   private
 
   def poker_game_entry_params

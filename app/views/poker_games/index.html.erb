@@ -1,9 +1,12 @@
 <% if authenticated? %>
   <%= link_to 'Create New Game', new_poker_game_path, class: 'btn btn-primary mb-3' %>
+<% else %>
+  <%= link_to 'Admin Login', new_session_path %>
 <% end %>
+
 <div class="row">
   <% @poker_games.each do |poker_game| %>
-    <div class="col-sm-3 border border-primary rounded-3">
+    <div class="col-sm-4 border border-primary rounded-3">
       <div class="card-header p-3 text-center">
         <div class="row gx-0">
           <div class="col-sm-3 border border-primary card rounded-3">
@@ -12,7 +15,11 @@
             <div class="row"><div class="col-12"><div class="bg-primary text-secondary"><%= poker_game.datetime.strftime('%I:%M %p') %></div></div></div>
           </div>
           <div class="col-sm-9">
-            <h5 class="card-title text-center"><%= poker_game.title %></h5>
+            <h5 class="card-title text-center"><%= poker_game.title %>
+              <% if authenticated? %>
+                <%= link_to(fa_icon("pencil", class: "text-info"), edit_poker_game_path(poker_game)) %>
+              <% end %>
+            </h5>
             <div class="card-text">
               <small><%= poker_game.location %></small>
             </div>
@@ -39,7 +46,7 @@
                       <%= poker_entry_form.text_field :name, placeholder: 'Your Name for the List' %>
                     </div>
                     <div class="mb-3">
-                      <%= poker_entry_form.submit %>
+                      <%= poker_entry_form.submit 'Sign Up', class: "btn btn-primary" %>
                     </div>
                   <% end %>
                 </div>
@@ -53,11 +60,16 @@
                   Show the List
                 </button>
               </h2>
-              <div id="collapseList<%= poker_game.id %>" class="accordion-collapse collapse" data-bs-parent="#accordion<%= poker_game.id %>">
+              <div id="collapseList<%= poker_game.id %>" class="accordion-collapse collapse show" data-bs-parent="#accordion<%= poker_game.id %>">
                 <div class="accordion-body">
                   <ol>
                     <% poker_game.poker_game_entries.each do |poker_game_entry| %>
-                      <li><%= poker_game_entry.name %></li>
+                      <li>
+                        <%= poker_game_entry.name %>
+                        <% if authenticated? %>
+                          <%= link_to(fa_icon("delete-left", class: "text-danger"), poker_game_entry, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }) %>
+                        <% end %>
+                      </li>
                     <% end %>
                   </ol>
                 </div>

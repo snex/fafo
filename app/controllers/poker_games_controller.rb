@@ -18,6 +18,17 @@ class PokerGamesController < ApplicationController
     redirect_to poker_games_path
   end
 
+  def edit
+    @poker_game = PokerGame.find(params[:id])
+  end
+
+  def update
+    @poker_game = PokerGame.find(params[:id])
+    @poker_game.update!(poker_game_params)
+
+    redirect_to poker_games_path
+  end
+
   private
 
   def poker_game_params

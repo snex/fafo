@@ -1,14 +1,1 @@
-<%= bootstrap_form_with model: @poker_game do |form| %>
-  <div class="mb-3">
-    <%= form.text_field :title, placeholder: 'Poker Game Title (e.g. FAFO Fridays at Santa Fe!)' %>
-  </div>
-  <div class="mb-3">
-    <%= form.text_field :location, placeholder: 'Game Location' %>
-  </div>
-  <div class="mb-3">
-    <%= form.datetime_field :datetime, label: 'Date and Time' %>
-  </div>
-  <div class="mb-3">
-    <%= form.submit %>
-  </div>
-<% end %>
+<%= render 'poker_games/form' %>
